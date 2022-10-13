@@ -1,45 +1,110 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			apiPeople_data: [], 
+			apiPlanets_data: [],
+			apiVehicles_data: [], 
+			apiFilms_data: [], 
+			apiSpecies_data: [],
+			apiStarships_data: [],
+
+			//id
+			apiPeople_ID_data: {},
+			apiPlanets_ID_data: {},
+			apiVehicles_ID_data: {},
+			apiFilms_ID_data: {},
+			apiSpecies_ID_data: {}, 
+			apiStarships_ID_data: {},
+
+
+			favorites: [],
+			colorFavorite: ["text-primary", "text-danger"],
+			class_color: ""
+
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+			funFavorites: (favorite)=>{
+				
+				const store = getStore()
+				const actions = getActions()
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+				if(store.favorites.includes(favorite)){
+					//elimina
+					actions.delFavorites(favorite)
+				}else{
+					//agrega
+					setStore({favorites: [...store.favorites, favorite]})
+				}
+			},
+			delFavorites: (favorite)=>{
+				const store = getStore()
+				setStore({favorites: [...store.favorites.filter((item)=>item !== favorite)]})
+			},
+			apiPeople: ()=>{
+				fetch("https://www.swapi.tech/api/people")
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiPeople_data: data.results}) )
+			},
+			apiPlanets: ()=>{
+				fetch("https://www.swapi.tech/api/planets")
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiPlanets_data: data.results}) )
+			}, 
+			apiVehicles: ()=>{
+				fetch("https://www.swapi.tech/api/vehicles")
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiVehicles_data: data.results}) )
+			},
+			apiFilms: ()=>{
+				fetch("https://www.swapi.tech/api/films")
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiFilms_data: data.result}) )
+			},
+			apiSpecies: ()=>{
+				fetch("https://www.swapi.tech/api/species")
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiSpecies_data: data.results}) )
+			},
+			apiStarships: ()=>{
+				fetch("https://www.swapi.tech/api/starships")
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiStarships_data: data.results}) )
+			},
 
-				//reset the global store
-				setStore({ demo: demo });
+
+			// segun el ID
+			apiPeople_ID: (id)=>{
+				fetch("https://www.swapi.tech/api/people/"+id)
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiPeople_ID_data: data.result}) )
+			}, 
+			apiPlanets_ID: (id)=>{
+				fetch("https://www.swapi.tech/api/planets/"+id)
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiPlanets_ID_data: data.result}) )
+			}, 
+			apiVehicles_ID: (id)=>{
+				fetch("https://www.swapi.tech/api/vehicles/"+id)
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiVehicles_ID_data: data.result}) )
+			}, 
+			apiFilms_ID: (id)=>{
+				fetch("https://www.swapi.tech/api/films/"+id)
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiFilms_ID_data: data.result}) )
+			},
+			apiSpecies_ID: (id)=>{
+				fetch("https://www.swapi.tech/api/species/"+id)
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiSpecies_ID_data: data.result}) )
+			},
+			apiStarships_ID: (id)=>{
+				fetch("https://www.swapi.tech/api/starships/"+id)
+				.then((response)=>response.json())
+				.then((data)=>setStore({apiStarships_ID_data: data.result}) )
 			}
-		}
-	};
+	}
 };
+}
 
 export default getState;

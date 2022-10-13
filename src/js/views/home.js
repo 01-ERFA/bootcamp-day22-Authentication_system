@@ -1,15 +1,43 @@
-import React from "react";
-import rigoImage from "../../img/rigo-baby.jpg";
+import React, {useState, useEffect, useContext} from "react";
 import "../../styles/home.css";
 
-export const Home = () => (
-	<div className="text-center mt-5">
-		<h1>Hello Rigo!</h1>
-		<p>
-			<img src={rigoImage} />
-		</p>
-		<a href="#" className="btn btn-success">
-			If you see this green button, bootstrap is working
-		</a>
-	</div>
-);
+import {Context} from "../store/appContext"
+
+import Body_c from "../component/body_component"
+
+const Home = () => {
+
+	let {store} = useContext(Context)
+
+	return (
+		<>
+			<hr />
+			<div className="container">
+
+				<Body_c title="People" obj={store.apiPeople_data}/>
+				<br />
+
+				<Body_c title="Planets" obj={store.apiPlanets_data} />
+				<br />
+
+				<Body_c title="Films" obj={store.apiFilms_data} />
+				<br />
+
+				<Body_c title="Species" obj={store.apiSpecies_data} />
+				<br />
+
+				<Body_c title="Starship" obj={store.apiStarships_data} />
+				<br />
+
+				<Body_c title="Vehicles" obj={store.apiVehicles_data} />
+				<br />
+
+			</div>
+	
+
+		</>
+	)
+
+};
+
+export default Home;
