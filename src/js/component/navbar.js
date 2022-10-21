@@ -5,10 +5,27 @@ import logoImage from "../../img/logo.png"
 
 import {Context} from "../store/appContext"
 
+import "../../styles/details.css";
+
 export const Navbar = () => {
 
 
-	let {store} = useContext(Context)
+	let {store, actions} = useContext(Context)
+
+	const [visibility_button_favorite, setVisibility_button_favorite] = useState("hidden")
+	const [visibility_button_login, setVisibility_button_login] = useState("show")
+
+	useEffect(()=>{
+		if(store.auth === true){
+			setVisibility_button_favorite("show")
+			setVisibility_button_login("hidden")
+		}else{
+			setVisibility_button_favorite("hidden")
+			setVisibility_button_login("show")
+		}
+	},[store.auth])
+
+
 
 	// let button_delete = (id)=>{
     //     setDelete_color("btn btn-danger")
@@ -51,20 +68,32 @@ export const Navbar = () => {
 				<img className="img-fluid img-thumbnail" src={logoImage} style={{maxWidth:"100px", maxHeigth:"100px"}} />
 			</Link>
 
-			<Link to="" className="me-4 nav-item dropdown">
-				<button className="btn btn-primary nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" aria-expanded="false">
-					Favorites 
+			{/* login */}
+			<Link to="/login" className={visibility_button_login}>
+				<button className="btn btn-primary me-3">
+					Login
 				</button>
-				<ul className="dropdown-menu bg-dark me-4">
+			</Link>
 
-					{screen_list}
+			{/* favorites */}
+			<Link to="" className={"me-4 nav-item dropdown d-flex "+visibility_button_favorite} style={{textDecoration: "none"}} >
+				<div className="d-flex flex-column">
+					<button className="btn btn-primary nav-link dropdown-toggle text-light mx-2" data-bs-toggle="dropdown" aria-expanded="false">
+						Favorites 
+					</button>
+					<ul className="dropdown-menu bg-dark me-4">
 
-					{/* <hr />
-					<button onClick={()=>button_delete_all()} className="btn btn-danger ms-3">
+						{screen_list}
+						{/* <hr />
+						<button onClick={()=>button_delete_all()} className="btn btn-danger ms-3">
 						Delete all
 					</button> */}
+					</ul>
+				</div>
 
-          		</ul>
+				<button onClick={()=>actions.logOut()} className="btn border-info btn-secondary mx-2">
+					Log Out
+				</button>
 			</Link>
 
 		</nav>

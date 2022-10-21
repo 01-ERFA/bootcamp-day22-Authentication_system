@@ -2,3 +2,11 @@ body {
     min-width: 1115px;
     background:#2c2c54
 }
+
+.hidden{
+    display: none !important;
+}
+
+.show{
+    display: unset;
+}

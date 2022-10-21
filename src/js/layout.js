@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
 import Home from "./views/home";
+import Login from "./views/login";
+import Profile from "./views/profile";
 
 import Details_people from "./views/details_people"
 import Details_planets from "./views/details_planets"
@@ -30,6 +32,14 @@ const Layout = () => {
 					<Switch>
 						<Route exact path="/">
 							<Home />
+						</Route>
+
+						<Route exact path="/login">
+							<Login />
+						</Route>
+
+						<Route exact path="/profile">
+							<Profile />
 						</Route>
 						
 
