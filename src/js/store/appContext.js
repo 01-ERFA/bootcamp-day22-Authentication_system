@@ -38,6 +38,12 @@ const injectContext = PassedComponent => {
 			state.actions.apiFilms()
 			state.actions.apiSpecies()
 			state.actions.apiStarships()
+
+			state.actions.validateToken()
+
+			setTimeout(() => {
+				state.actions.getProfile()
+			}, 1000);
 		}, []);
 
 		// The initial value for the context is not null anymore, but the current state of this component,

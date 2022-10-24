@@ -27,14 +27,57 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			auth: false,
 
-			id_user: ""
+			id_user: "",
+			profile: {}
 
 		},
 		actions: {
+			getProfile: async ()=>{
+				const accesToken = localStorage.getItem("token")
+				const store = getStore()
+				const actions = getActions()
+				actions.validateToken()
+				try{
+					if(store.auth == true){
+						const response = await axios.get('https://3000-01erfa-bootcampday21bui-3x511046nun.ws-us72.gitpod.io/profile', {
+							headers: {
+								Authorization: "Bearer " + accesToken,
+							}
+						})
+						setStore({
+							profile: response?.data
+						})
+					}
+
+				}catch(error){
+					console.log(error)
+				}
+
+			},
+			validateToken: async ()=>{
+				const accesToken = localStorage.getItem("token")
+				try {
+					const response = await axios.get('https://3000-01erfa-bootcampday21bui-3x511046nun.ws-us72.gitpod.io/valid-token', {
+					    headers: {
+					        Authorization: "Bearer " + accesToken,
+					    }
+					})
+					setStore({
+						auth: response.data.status
+					})
+				}catch(error){
+					console.log(error)
+					if (error.code === "ERR_BAD_REQUEST") {
+						setStore({
+						    auth: false
+						})
+					}
+				}
+			},
 			signUp: async (name, email, password)=>{
 				try{
 
-					const response = await axios.post('https://3000-4geeksacade-flaskresthe-qjruzvrio0r.ws-us72.gitpod.io/users', {
+					const response = await axios.post('https://3000-01erfa-bootcampday21bui-3x511046nun.ws-us72.gitpod.io/users', {
 						"name": name,
 						"email": email,
 						"password": password,
@@ -57,7 +100,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			login: async (email, password)=>{
 				try{ 
-					const response = await fetch('https://3000-4geeksacade-flaskresthe-qjruzvrio0r.ws-us72.gitpod.io/login', {
+					const response = await fetch('https://3000-01erfa-bootcampday21bui-3x511046nun.ws-us72.gitpod.io/login', {
 
 						method: "POST",
 						body: JSON.stringify({
@@ -83,8 +126,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(err)
 					// return false;
 				}
-
-
 			},
 			funFavorites: (favorite)=>{
 				
